@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "listen": "nodeman server.js"
   },
   "name": "",
   "version": "",

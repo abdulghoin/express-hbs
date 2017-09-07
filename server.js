@@ -4,12 +4,19 @@ const bodyParser = require('body-parser')
 const items = require('./models/items.json')
 
 const app = express()
+const PORT = process.env.PORT || 5432
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] === 'http') {
+    next()
+  } else {
+    res.redirect(`http://${req.hostname}${req.url}`)
+  }
+})
 app.use(express.static('public'))
-
 app.use(bodyParser.urlencoded({
   extended : false
 }))
@@ -43,6 +50,6 @@ app.get('/detail/:id', (req, res) => {
   res.render('detail', {detail})
 })
 
-app.listen(5432, () => {
-  console.log('Magic happened at 127.0.0.1:5432')
+app.listen(PORT, () => {
+  console.log(`Magic happened at 127.0.0.1:${PORT}`)
 })
